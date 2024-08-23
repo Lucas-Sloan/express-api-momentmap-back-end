@@ -151,4 +151,33 @@ router.put('/:momentId/schedule/:scheduleId', verifyToken, async (req, res) => {
     }
 });
 
+// Route to delete a specific schedule item within a moment
+router.delete('/:momentId/schedule/:scheduleId', verifyToken, async (req, res) => {
+    try {
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Find the index of the specific schedule item by ID
+        const scheduleIndex = moment.schedule.findIndex(item => item._id.toString() === req.params.scheduleId);
+
+        if (scheduleIndex === -1) {
+            return res.status(404).json({ error: 'Schedule item not found.' });
+        }
+
+        // Remove the schedule item using splice
+        moment.schedule.splice(scheduleIndex, 1);
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(200).json({ message: 'Schedule item deleted successfully.', moment });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
