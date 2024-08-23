@@ -119,4 +119,36 @@ router.post('/:momentId/schedule', verifyToken, async (req, res) => {
     }
 });
 
+// Route to update a specific schedule item within a moment
+router.put('/:momentId/schedule/:scheduleId', verifyToken, async (req, res) => {
+    try {
+        const { time, eventDescription } = req.body;
+
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Find the specific schedule item by ID
+        const scheduleItem = moment.schedule.id(req.params.scheduleId);
+
+        if (!scheduleItem) {
+            return res.status(404).json({ error: 'Schedule item not found.' });
+        }
+
+        // Update the schedule item with new data
+        scheduleItem.time = time;
+        scheduleItem.eventDescription = eventDescription;
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(200).json(moment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
