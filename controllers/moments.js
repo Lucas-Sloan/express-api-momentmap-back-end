@@ -240,4 +240,33 @@ router.put('/:momentId/guests/:guestId', verifyToken, async (req, res) => {
     }
 });
 
+// Route to delete a specific guest from a moment's guest list
+router.delete('/:momentId/guests/:guestId', verifyToken, async (req, res) => {
+    try {
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Find the index of the specific guest by ID
+        const guestIndex = moment.guests.findIndex(guest => guest._id.toString() === req.params.guestId);
+
+        if (guestIndex === -1) {
+            return res.status(404).json({ error: 'Guest not found.' });
+        }
+
+        // Remove the guest using splice
+        moment.guests.splice(guestIndex, 1);
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(200).json({ message: 'Guest deleted successfully.', moment });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
