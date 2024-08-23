@@ -180,4 +180,28 @@ router.delete('/:momentId/schedule/:scheduleId', verifyToken, async (req, res) =
     }
 });
 
+// Route to add a guest to a specific moment
+router.post('/:momentId/guests', verifyToken, async (req, res) => {
+    try {
+        const { firstName, lastName, email, message, RSVP, plusOne } = req.body;
+
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Add the new guest to the moment's guests list
+        moment.guests.push({ firstName, lastName, email, message, RSVP, plusOne });
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(201).json(moment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
