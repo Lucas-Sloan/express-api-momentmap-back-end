@@ -80,4 +80,19 @@ router.put('/:momentId', verifyToken, async (req, res) => {
     }
 });
 
+// Route to delete a specific moment by ID
+router.delete('/:momentId', verifyToken, async (req, res) => {
+    try {
+        const moment = await Moment.findOneAndDelete({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        res.status(200).json({ message: 'Moment deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
