@@ -95,4 +95,28 @@ router.delete('/:momentId', verifyToken, async (req, res) => {
     }
 });
 
+// Route to add a schedule item to a specific moment
+router.post('/:momentId/schedule', verifyToken, async (req, res) => {
+    try {
+        const { time, eventDescription } = req.body;
+
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Add the new schedule item to the moment's schedule
+        moment.schedule.push({ time, eventDescription });
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(201).json(moment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
