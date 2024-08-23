@@ -58,4 +58,26 @@ router.get('/:momentId', verifyToken, async (req, res) => {
     }
 });
 
+// Route to update a specific moment by ID
+router.put('/:momentId', verifyToken, async (req, res) => {
+    try {
+        const { title, description, date, location, image, guests, schedule } = req.body;
+
+        // Find the moment and ensure it belongs to the authenticated user
+        const moment = await Moment.findOneAndUpdate(
+            { _id: req.params.momentId, createdBy: req.user._id },
+            { title, description, date, location, image, guests, schedule },
+            { new: true, runValidators: true } // Return the updated document
+        );
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        res.status(200).json(moment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
