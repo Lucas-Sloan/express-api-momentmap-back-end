@@ -204,4 +204,40 @@ router.post('/:momentId/guests', verifyToken, async (req, res) => {
     }
 });
 
+// Route to edit a specific guest in a moment's guest list
+router.put('/:momentId/guests/:guestId', verifyToken, async (req, res) => {
+    try {
+        const { firstName, lastName, email, message, RSVP, plusOne } = req.body;
+
+        // Find the moment by ID and ensure it belongs to the authenticated user
+        const moment = await Moment.findOne({ _id: req.params.momentId, createdBy: req.user._id });
+
+        if (!moment) {
+            return res.status(404).json({ error: 'Moment not found or you do not have access to this moment.' });
+        }
+
+        // Find the specific guest by ID
+        const guest = moment.guests.id(req.params.guestId);
+
+        if (!guest) {
+            return res.status(404).json({ error: 'Guest not found.' });
+        }
+
+        // Update the guest with new data
+        guest.firstName = firstName || guest.firstName;
+        guest.lastName = lastName || guest.lastName;
+        guest.email = email || guest.email;
+        guest.message = message || guest.message;
+        guest.RSVP = RSVP !== undefined ? RSVP : guest.RSVP;
+        guest.plusOne = plusOne !== undefined ? plusOne : guest.plusOne;
+
+        // Save the updated moment
+        await moment.save();
+
+        res.status(200).json(moment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
