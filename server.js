@@ -10,6 +10,7 @@ const usersRouter = require('./controllers/users');
 const profilesRouter = require('./controllers/profiles');
 const momentsRouter = require('./controllers/moments');
 const guestsRouter = require('./controllers/guests');
+const calendarAuthRouter = require('./middleware/calendar-auth');
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -25,6 +26,9 @@ app.use('/users', usersRouter);
 app.use('/profiles', profilesRouter);
 app.use('/moments', momentsRouter);
 app.use('/guests', guestsRouter);
+
+
+app.use('/', calendarAuthRouter);
 
 app.listen(3000, () => {
     console.log('The express app is ready!');
