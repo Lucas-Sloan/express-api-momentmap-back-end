@@ -108,16 +108,19 @@ router.post('/:momentId/schedule', verifyToken, async (req, res) => {
         }
 
         // Add the new schedule item to the moment's schedule
-        moment.schedule.push({ time, eventDescription });
+        const newScheduleItem = { time, eventDescription };
+        moment.schedule.push(newScheduleItem);
 
         // Save the updated moment
         await moment.save();
 
-        res.status(201).json(moment);
+        // Return the newly added schedule item
+        res.status(201).json(moment.schedule[moment.schedule.length - 1]);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
+
 
 // Route to update a specific schedule item within a moment
 router.put('/:momentId/schedule/:scheduleId', verifyToken, async (req, res) => {
@@ -193,12 +196,14 @@ router.post('/:momentId/guests', verifyToken, async (req, res) => {
         }
 
         // Add the new guest to the moment's guests list
-        moment.guests.push({ firstName, lastName, email, message, RSVP, plusOne });
+        const newGuest = { firstName, lastName, email, message, RSVP, plusOne };
+        moment.guests.push(newGuest);
 
         // Save the updated moment
         await moment.save();
 
-        res.status(201).json(moment);
+        // Return the newly added guest
+        res.status(201).json(moment.guests[moment.guests.length - 1]);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
