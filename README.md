@@ -26,6 +26,7 @@
  - The inspiration for Moment Map came from the need to have an organized way to manage events, whether personal or professional, with a focus on tracking guest participation.
  - This project combines MongoDB, Express.js, React, and Node.js (MERN stack) with a responsive UI design.
  - The integration with Google Calendar API enhances the user experience by allowing synchronization of events with Google Calendar.
+ - https://trello.com/b/zNg0jUs4/momentmap
 
 </div>
 
