@@ -18,24 +18,24 @@ mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('connected', () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
+
 app.use(cors({
     origin: ['https://moment-map.netlify.app'],
-    credentials: true, 
+    credentials: true,
 }));
 
 app.use(express.json());
 
-// Routes go here
+// Define routes
 app.use('/test-jwt', testJWTRouter);
 app.use('/users', usersRouter);
 app.use('/profiles', profilesRouter);
 app.use('/moments', momentsRouter);
 app.use('/guests', guestsRouter);
-
-
 app.use('/', calendarAuthRouter);
 app.use('/calendar', calendarRouter);
 
-app.listen(3000, () => {
-    console.log('The express app is ready!');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
