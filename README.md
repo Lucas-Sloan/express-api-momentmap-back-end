@@ -1,6 +1,6 @@
 # Moment Map
 <div id="header" align="center">
-  <img src="src/assets/Moment-Map-Icon-inverse.png" width="400" height="400">
+  <img src="public/images/Moment-Map-icon-inverse.png" width="400" height="400">
 </div>
 
 <div id="description" align="center">
