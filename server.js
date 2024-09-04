@@ -12,6 +12,7 @@ const momentsRouter = require('./controllers/moments');
 const guestsRouter = require('./controllers/guests');
 const calendarAuthRouter = require('./middleware/calendar-auth');
 const calendarRouter = require('./controllers/calendar');
+const verifyToken = require('./middleware/verify-token');
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -33,7 +34,7 @@ app.use('/profiles', profilesRouter);
 app.use('/moments', momentsRouter);
 app.use('/guests', guestsRouter);
 app.use('/', calendarAuthRouter);
-app.use('/calendar', calendarRouter);
+app.use('/calendar', verifyToken, calendarRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
