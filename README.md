@@ -1,4 +1,4 @@
-# Moment Map
+# Moment Map Back-End
 <div id="header" align="center">
   <img src="public/images/Moment-Map-icon-inverse.png" width="400" height="400">
 </div>
@@ -7,7 +7,7 @@
   
   # Moment Map
 
-  ### [Explore Now](https://your-deployed-site-url.com)
+  ### [Explore Now](https://moment-map.netlify.app/)
   #### [Front-end](https://github.com/Lucas-Sloan/react-momentmap-front-end)
 
   ##### Lucas Sloan
