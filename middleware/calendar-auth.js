@@ -22,6 +22,20 @@ router.get('/auth/google', (req, res) => {
     access_type: 'offline',
     scope: SCOPES,
   });
+
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: 'Authorization token missing' });
+  }
+
+  // Set the cookie from the server
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
+    path: '/',
+  });
+
   res.redirect(authUrl);
 });
 
