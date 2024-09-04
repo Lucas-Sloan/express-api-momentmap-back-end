@@ -20,7 +20,7 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use(cors({
-    origin: ['https://moment-map.netlify.app'],
+    origin: ['https://moment-map.netlify.app', 'https://moment-map-1e3caa864534.herokuapp.com'],
     credentials: true,
 }));
 
