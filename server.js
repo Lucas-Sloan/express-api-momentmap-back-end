@@ -12,7 +12,6 @@ const momentsRouter = require('./controllers/moments');
 const guestsRouter = require('./controllers/guests');
 const calendarAuthRouter = require('./middleware/calendar-auth');
 const calendarRouter = require('./controllers/calendar');
-const verifyToken = require('./middleware/verify-token');
 
 mongoose.connect(process.env.MONGODB_URI);
 
