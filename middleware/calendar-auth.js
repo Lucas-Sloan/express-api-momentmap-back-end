@@ -1,4 +1,3 @@
-//middleware/calendar-auth.js
 const express = require('express');
 const { google } = require('googleapis');
 const router = express.Router();

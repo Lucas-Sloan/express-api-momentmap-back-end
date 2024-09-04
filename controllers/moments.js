@@ -1,4 +1,3 @@
-// controllers/moments.js
 const express = require('express');
 const router = express.Router();
 const Moment = require('../models/moment');

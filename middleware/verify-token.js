@@ -1,4 +1,3 @@
-//middleware/verify-token.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
