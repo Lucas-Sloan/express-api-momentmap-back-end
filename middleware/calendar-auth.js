@@ -51,7 +51,7 @@ router.get('/auth/google/callback', async (req, res) => {
     }
     await user.save();
 
-    // Redirect back to the client application (Update this line)
+    // Redirect back to the client application
     res.redirect('https://moment-map.netlify.app/calendar');
   } catch (error) {
     console.error('Error during OAuth callback:', error);
