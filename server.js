@@ -34,7 +34,7 @@ app.use('/profiles', profilesRouter);
 app.use('/moments', momentsRouter);
 app.use('/guests', guestsRouter);
 app.use('/', calendarAuthRouter);
-app.use('/calendar', verifyToken, calendarRouter);
+app.use('/calendar', calendarRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
